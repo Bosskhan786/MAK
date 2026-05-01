@@ -2175,3 +2175,8 @@ img { max-width: 100%; display: block; }
   background: rgba(var(--primary-rgb), .15);
   color: var(--text);
 }
+
+/* Google Button */
+.btn-google {
+  margin-top: 3px;
+}
