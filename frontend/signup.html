@@ -84,7 +84,7 @@ document.getElementById("signupForm").addEventListener("submit", async function(
   btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creating account…';
 
   try {
-    const res  = await fetch("/api/auth/signup", {
+    const res  = await fetch("https://doc-mak.onrender.com/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password })
@@ -94,7 +94,7 @@ document.getElementById("signupForm").addEventListener("submit", async function(
 
     if (res.ok) {
       // Auto-login after signup
-      const loginRes = await fetch("/api/auth/login", {
+      const loginRes = await fetch("https://doc-mak.onrender.com/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })

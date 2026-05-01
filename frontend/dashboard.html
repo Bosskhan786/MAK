@@ -116,7 +116,7 @@ async function loadAppointments() {
   grid.innerHTML        = "";
 
   try {
-    const res  = await fetch("http://localhost:5000/api/appointments", {
+    const res  = await fetch("https://doc-mak.onrender.com/api/appointments", {
       headers: { Authorization: token }
     });
 
