@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Dr. Maaz Khan - Senior Cardiologist & Internal Medicine Specialist. Book appointments online." />
+  <title>Dr. Maaz Khan | Cardiologist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <span class="brand-cross">✦</span> Dr. Maaz Khan
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <i class="bi bi-list"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+        <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        <li class="nav-item nav-auth-item" id="navDashboardItem" style="display:none">
+          <a class="nav-link" href="dashboard.html"><i class="bi bi-grid-1x2 me-1"></i>Dashboard</a>
+        </li>
+        <li class="nav-item nav-auth-item" id="navSignupItem">
+          <a class="nav-link" href="signup.html">Signup</a>
+        </li>
+        <li class="nav-item ms-lg-2">
+          <a class="btn btn-primary nav-btn" href="login.html" id="navLoginBtn">Login</a>
+        </li>
+        <li class="nav-item ms-1">
+          <button class="dark-toggle" id="darkToggle" title="Toggle dark mode">🌙</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero-section">
+  <div class="hero-backdrop"></div>
+  <div class="container hero-inner">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 hero-text-col">
+        <div class="hero-badge-pill">
+          <span class="badge-dot"></span>
+          Senior Cardiologist · Apollo Heart Centre · 20+ Years
+        </div>
+        <h1 class="hero-title">
+          Dr. MAAZ<br/><em>Khan</em>
+        </h1>
+        <p class="hero-tagline">Compassionate cardiac care, grounded in science — restoring hearts, transforming lives.</p>
+        <div class="hero-cta-group">
+          <a href="contact.html" class="btn btn-primary btn-lg">
+            <i class="bi bi-calendar2-check me-2"></i>Book Appointment
+          </a>
+          <a href="about.html" class="btn btn-ghost-hero btn-lg">
+            Learn More <i class="bi bi-arrow-right ms-1"></i>
+          </a>
+        </div>
+        <div class="hero-stats-row">
+          <div class="hstat">
+            <strong>8,400+</strong>
+            <span>Patients Treated</span>
+          </div>
+          <div class="hstat-divider"></div>
+          <div class="hstat">
+            <strong>20 Yrs</strong>
+            <span>Experience</span>
+          </div>
+          <div class="hstat-divider"></div>
+          <div class="hstat">
+            <strong>4.9 ★</strong>
+            <span>Patient Rating</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 hero-img-col">
+        <div class="hero-img-frame">
+          <img src="images/doc_image.jpeg" alt="Dr. Maaz Khan" onerror="this.src='https://placehold.co/460x560/d6eaf8/1a6b9e?text=Dr.+Maaz Khan'" />
+          <div class="hero-float-badge">
+            <i class="bi bi-hospital text-primary fs-4"></i>
+            <div>
+              <strong>Apollo Heart Centre</strong>
+              <small>Mumbai, India</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRIP -->
+<section class="strip-section">
+  <div class="container">
+    <div class="strip-grid">
+      <div class="strip-item">
+        <i class="bi bi-heart-pulse strip-icon"></i>
+        <div><strong>Cardiology</strong><p>Advanced cardiac diagnostics & treatment</p></div>
+      </div>
+      <div class="strip-item">
+        <i class="bi bi-clipboard2-pulse strip-icon"></i>
+        <div><strong>Internal Medicine</strong><p>Comprehensive preventive healthcare</p></div>
+      </div>
+      <div class="strip-item">
+        <i class="bi bi-activity strip-icon"></i>
+        <div><strong>Research-Backed</strong><p>Evidence-based treatment protocols</p></div>
+      </div>
+      <div class="strip-item">
+        <i class="bi bi-calendar2-plus strip-icon"></i>
+        <div><strong>Easy Booking</strong><p>Same-day & online appointments</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT SNIPPET -->
+<section class="about-snippet-section section-pad">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-5">
+        <div class="about-img-wrap">
+          <img src="images/clinic.jpg" alt="Clinic" onerror="this.src='https://placehold.co/500x420/eaf4fb/1a6b9e?text=Clinic'" class="w-100 rounded-4" />
+          <div class="exp-badge">
+            <span class="exp-num">20</span>
+            <small>Years<br/>Experience</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7 ps-lg-5">
+        <span class="section-label">About the Doctor</span>
+        <h2 class="section-title">Healing hearts with precision and <em>empathy</em></h2>
+        <p class="section-body">Dr. Ananya Maaz Khan is a board-certified cardiologist at Apollo Heart Centre, Mumbai. A graduate of AIIMS New Delhi and fellowship-trained at Johns Hopkins, she combines world-class expertise with warmth that puts every patient at ease.</p>
+        <ul class="check-list">
+          <li><i class="bi bi-check-circle-fill text-primary me-2"></i>MBBS, MD – AIIMS New Delhi</li>
+          <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Fellowship in Interventional Cardiology – Johns Hopkins</li>
+          <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Member, Cardiological Society of India</li>
+          <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Published researcher in NEJM & Lancet</li>
+        </ul>
+        <a href="about.html" class="btn btn-primary mt-3">Full Profile <i class="bi bi-arrow-right ms-1"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services-section section-pad bg-soft">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <span class="section-label">What We Offer</span>
+      <h2 class="section-title">Our <em>Services</em></h2>
+      <p class="section-sub">Comprehensive cardiac and internal medicine care under one roof.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4">
+        <div class="svc-card h-100">
+          <div class="svc-icon-wrap"><i class="bi bi-heart-pulse-fill"></i></div>
+          <h3>Cardiac Consultation</h3>
+          <p>In-depth evaluation of heart health, ECG interpretation, risk stratification.</p>
+          <a href="services.html" class="svc-link">Learn more <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="svc-card h-100">
+          <div class="svc-icon-wrap"><i class="bi bi-graph-up-arrow"></i></div>
+          <h3>Echo & Stress Test</h3>
+          <p>Echocardiography, stress treadmill tests, and Holter monitoring.</p>
+          <a href="services.html" class="svc-link">Learn more <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="svc-card h-100">
+          <div class="svc-icon-wrap"><i class="bi bi-capsule"></i></div>
+          <h3>Interventional Cardiology</h3>
+          <p>Angioplasty, stenting, and catheter-based interventions.</p>
+          <a href="services.html" class="svc-link">Learn more <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="svc-card h-100">
+          <div class="svc-icon-wrap"><i class="bi bi-shield-check"></i></div>
+          <h3>Preventive Cardiology</h3>
+          <p>Lipid management, hypertension control, lifestyle modification programs.</p>
+          <a href="services.html" class="svc-link">Learn more <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="svc-card h-100">
+          <div class="svc-icon-wrap"><i class="bi bi-bicycle"></i></div>
+          <h3>Cardiac Rehab</h3>
+          <p>Post-procedure recovery, supervised exercise therapy, nutritional counseling.</p>
+          <a href="services.html" class="svc-link">Learn more <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="svc-card h-100">
+          <div class="svc-icon-wrap"><i class="bi bi-camera-video"></i></div>
+          <h3>Teleconsultation</h3>
+          <p>Video consultations for follow-ups and out-of-city patients.</p>
+          <a href="services.html" class="svc-link">Learn more <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-5">
+      <a href="services.html" class="btn btn-outline-primary btn-lg px-5">View All Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section section-pad">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <span class="section-label">Patient Stories</span>
+      <h2 class="section-title">What Patients <em>Say</em></h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="testi-card h-100">
+          <div class="testi-stars">★★★★★</div>
+          <p>"Dr. Maaz Khan diagnosed my condition that three other doctors missed. Her patience in explaining everything gave me real peace of mind."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">RM</div>
+            <div><strong>Ramesh Mehta</strong><span>Mumbai, 2024</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="testi-card h-100 featured">
+          <div class="testi-stars">★★★★★</div>
+          <p>"After my bypass, Dr. Maaz Khan's cardiac rehab program had me back to hiking within 6 months. I owe my quality of life to her and her team."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">PK</div>
+            <div><strong>Priya Krishnan</strong><span>Pune, 2024</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="testi-card h-100">
+          <div class="testi-stars">★★★★★</div>
+          <p>"The clinic is modern, the staff is warm, and Dr. Maaz Khan is extraordinary. Booking online was seamless. Highly recommend."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">AS</div>
+            <div><strong>Arjun Singh</strong><span>Delhi, 2023</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner-section">
+  <div class="container">
+    <div class="cta-inner text-center">
+      <h2>Your heart health matters.<br/><em>Schedule a consultation today.</em></h2>
+      <a href="contact.html" class="btn btn-white btn-lg mt-4">
+        <i class="bi bi-calendar2-check me-2"></i>Book Appointment
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer-section">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-3 col-md-6">
+        <a class="footer-brand" href="index.html"><span class="brand-cross">✦</span> Dr. Maaz Khan</a>
+        <p class="footer-tagline">Compassionate cardiac care in Mumbai since 2004. Every heartbeat matters.</p>
+        <div class="social-links">
+          <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+          <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+          <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-6">
+        <h5 class="footer-heading">Quick Links</h5>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="login.html">Patient Login</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <h5 class="footer-heading">Services</h5>
+        <ul class="footer-links">
+          <li><a href="services.html">Cardiac Consultation</a></li>
+          <li><a href="services.html">Echo & Stress Test</a></li>
+          <li><a href="services.html">Interventional Cardiology</a></li>
+          <li><a href="services.html">Preventive Care</a></li>
+          <li><a href="services.html">Teleconsultation</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="footer-doc-card">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <img src="images/doctor.jpg" alt="Dr. Maaz Khan" class="footer-doc-img" onerror="this.src='https://placehold.co/70x70/d6eaf8/1a6b9e?text=Dr.Mak'" />
+            <div>
+              <strong>Dr. Maaz Khan</strong>
+              <small>MD, DM Cardiology</small>
+              <small>Senior Cardiologist</small>
+            </div>
+          </div>
+          <ul class="doc-contact-list">
+            <li><i class="bi bi-telephone-fill"></i><a href="tel:+912212345678">+91 22 1234 5678</a></li>
+            <li><i class="bi bi-envelope-fill"></i><a href="mailto:dr.Maaz Khan@apolloheart.in">dr.Maaz Khan@apolloheart.in</a></li>
+            <li><i class="bi bi-geo-alt-fill"></i>Apollo Heart Centre, Tardeo Rd, Mumbai 400034</li>
+            <li><i class="bi bi-clock-fill"></i>Mon–Sat: 9am – 6pm</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Built with care for better health outcomes.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
