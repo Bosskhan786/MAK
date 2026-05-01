@@ -1,8 +1,8 @@
 // server.js
 require("dotenv").config();
 
-const express = require("express");
-const cors    = require("cors");
+const express   = require("express");
+const cors      = require("cors");
 const connectDB = require("./config/db");
 
 const authRoutes        = require("./routes/auth");
@@ -12,24 +12,23 @@ const app = express();
 
 connectDB();
 
-// ── CORS: allow your Vercel frontend ──────────────────────
+// ── CORS ──────────────────────────────────────────────────
 app.use(cors({
-  origin: "https://docmak-puce.vercel.app"
+  origin: [
+    "https://docmak.vercel.app",
+    "https://docmak-puce.vercel.app"
+  ]
 }));
 
 app.use(express.json());
 
-// ── Routes (use PATH strings, not full URLs) ──────────────
+// ── Routes ────────────────────────────────────────────────
 app.use("/api/auth",         authRoutes);
 app.use("/api/appointments", appointmentRoutes);
 
 // ── Health check ──────────────────────────────────────────
-app.get("/", (req, res) => {
-  res.send("Backend Working ✅");
-});
+app.get("/", (req, res) => res.send("Backend Working ✅"));
 
-// ── Start server ──────────────────────────────────────────
+// ── Start ─────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
