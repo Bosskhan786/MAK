@@ -15,8 +15,8 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/auth", authRoutes);
-app.use("/api/appointments", appointmentRoutes);
+app.use("https://doc-mak.onrender.com/api/auth", authRoutes);
+app.use("https://doc-mak.onrender.com/api/appointments", appointmentRoutes);
 
 app.listen(5000, () => {
   console.log("Server running on port 5000");
@@ -24,3 +24,6 @@ app.listen(5000, () => {
 app.get("/", (req, res) => {
   res.send("Backend Working ✅");
 });
+
+const cors = require("cors");
+app.use(cors());
