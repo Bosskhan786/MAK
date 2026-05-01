@@ -61,4 +61,16 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
+// DELETE /api/appointments/:id
+router.delete("/:id", authMiddleware, async (req, res) => {
+  try {
+    const appt = await Appointment.findOne({ _id: req.params.id, userId: req.user.id });
+    if (!appt) return res.status(404).json({ message: "Appointment not found." });
+    await appt.deleteOne();
+    res.json({ message: "Appointment cancelled." });
+  } catch (err) {
+    res.status(500).json({ message: "Could not cancel appointment." });
+  }
+});
+
 module.exports = router;
