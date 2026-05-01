@@ -26,4 +26,7 @@ app.get("/", (req, res) => {
 });
 
 const cors = require("cors");
-app.use(cors());
+
+app.use(cors({
+  origin: "https://docmak-puce.vercel.app"
+}));
