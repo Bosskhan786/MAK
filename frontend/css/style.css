@@ -1145,6 +1145,7 @@ img { max-width: 100%; display: block; }
   color: var(--primary);
   text-align: center;
   margin-bottom: 28px;
+  margin-right: 30px;
 }
 
 .auth-card h2 {
