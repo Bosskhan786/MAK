@@ -25,8 +25,7 @@ const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "")
   .map(o => o.trim())
   .filter(Boolean)
   .concat([
-    "https://docmak.vercel.app",
-    "https://docmak-puce.vercel.app",
+    "https://docmak.vercel.app"
   ]);
 
 app.use(cors({
