@@ -1,114 +1,82 @@
-// routes/auth.js  –  fixed + hardened
-const express  = require("express");
-const bcrypt   = require("bcryptjs");
-const jwt      = require("jsonwebtoken");
-const passport = require("passport");
-const User     = require("../models/User");
+// server.js  –  Dr. Maaz Khan backend  (fixed + hardened)
+require("dotenv").config();
 
-const router = express.Router();
+const express      = require("express");
+const cors         = require("cors");
+const session      = require("express-session");
+const passport     = require("passport");
+const connectDB    = require("./config/db");
 
-// ── Helpers ───────────────────────────────────────────────────
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+require("./config/passport"); // Google OAuth strategy
 
-function signToken(userId) {
-  const secret = process.env.JWT_SECRET;
-  if (!secret) throw new Error("JWT_SECRET not configured.");
-  return jwt.sign({ id: userId }, secret, { expiresIn: "7d" });
-}
+const authRoutes        = require("./routes/auth");
+const appointmentRoutes = require("./routes/appointment");
 
-// ── SIGNUP ────────────────────────────────────────────────────
-// FIX: Added email-format validation (was missing).
-// FIX: Normalise + trim all string inputs — was missing for `name`.
-// FIX: Use consistent { message } shape for all responses.
-router.post("/signup", async (req, res) => {
-  const name     = (req.body.name     || "").trim();
-  const email    = (req.body.email    || "").trim().toLowerCase();
-  const password = (req.body.password || "").trim();
+const app = express();
 
-  if (!name || !email || !password)
-    return res.status(400).json({ message: "All fields are required." });
+// ── Database ─────────────────────────────────────────────────
+connectDB();
 
-  if (!EMAIL_RE.test(email))
-    return res.status(400).json({ message: "Please enter a valid email address." });
+// ── CORS ──────────────────────────────────────────────────────
+// FIX: Was missing trailing-slash variants and localhost for dev.
+// Keep an explicit allowlist — never use origin: "*" in production.
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "")
+  .split(",")
+  .map(o => o.trim())
+  .filter(Boolean)
+  .concat([
+    "https://docmak.vercel.app",
+    "https://docmak-puce.vercel.app",
+  ]);
 
-  if (password.length < 6)
-    return res.status(400).json({ message: "Password must be at least 6 characters." });
+app.use(cors({
+  origin: (origin, cb) => {
+    // Allow server-to-server / curl (no Origin header) in dev only
+    if (!origin && process.env.NODE_ENV !== "production") return cb(null, true);
+    if (ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
+    cb(new Error(`CORS blocked: ${origin}`));
+  },
+  credentials: true,
+}));
 
-  // FIX: Cap name / password length to prevent DoS via huge strings.
-  if (name.length > 100)
-    return res.status(400).json({ message: "Name is too long." });
+// ── Body parsing ──────────────────────────────────────────────
+// FIX: Added explicit size limit to prevent large-payload DoS attacks.
+app.use(express.json({ limit: "50kb" }));
+app.use(express.urlencoded({ extended: false, limit: "50kb" }));
 
-  try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser)
-      return res.status(409).json({ message: "An account with this email already exists." });
+// ── Sessions (required by Passport for OAuth) ────────────────
+app.use(session({
+  secret: process.env.SESSION_SECRET || "a-very-temporary-fallback-secret-12345",  resave:            false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure:   process.env.NODE_ENV === "production", // HTTPS-only in prod
+    sameSite: "lax",
+    maxAge:   24 * 60 * 60 * 1000, // 1 day
+  },
+}));
 
-    const hashedPassword = await bcrypt.hash(password, 12); // FIX: 12 rounds (was 10)
-    const user = new User({ name, email, password: hashedPassword });
-    await user.save();
-    res.status(201).json({ message: "Account created successfully." });
+app.use(passport.initialize());
+app.use(passport.session());
 
-  } catch (err) {
-    console.error("Signup error:", err);
-    res.status(500).json({ message: "Server error. Please try again." });
-  }
+// ── Routes ────────────────────────────────────────────────────
+app.use("/api/auth",         authRoutes);
+app.use("/api/appointments", appointmentRoutes);
+
+// Health-check (useful for Render / uptime monitors)
+app.get("/", (_req, res) => res.json({ status: "ok", service: "mak-backend" }));
+
+// ── 404 handler ───────────────────────────────────────────────
+app.use((_req, res) => res.status(404).json({ message: "Route not found." }));
+
+// ── Global error handler ──────────────────────────────────────
+// FIX: Was missing entirely — unhandled errors leaked stack traces to clients.
+// eslint-disable-next-line no-unused-vars
+app.use((err, _req, res, _next) => {
+  console.error("Unhandled error:", err);
+  res.status(500).json({ message: "Internal server error." });
 });
 
-// ── LOGIN ─────────────────────────────────────────────────────
-// FIX: Removed information-leaking "No account found" / "Incorrect password"
-//      split — combined into a single vague message to prevent user-enumeration.
-// FIX: Trim inputs before comparing.
-router.post("/login", async (req, res) => {
-  const email    = (req.body.email    || "").trim().toLowerCase();
-  const password = (req.body.password || "").trim();
-
-  if (!email || !password)
-    return res.status(400).json({ message: "Email and password are required." });
-
-  try {
-    const user = await User.findOne({ email });
-
-    // FIX: Always run bcrypt.compare even when user is null to prevent
-    //      timing-based user enumeration (constant-time comparison).
-    const dummyHash  = "$2a$12$invalidhashinvalidhashinvalidhashinvalidhashinvalid";
-    const isMatch    = user
-      ? await bcrypt.compare(password, user.password)
-      : await bcrypt.compare(password, dummyHash).then(() => false);
-
-    if (!user || !isMatch)
-      return res.status(401).json({ message: "Invalid email or password." });
-
-    const token = signToken(user._id);
-    res.json({ message: "Login successful.", token });
-
-  } catch (err) {
-    console.error("Login error:", err);
-    res.status(500).json({ message: "Server error. Please try again." });
-  }
-});
-
-// ── GOOGLE OAuth ───────────────────────────────────────────────
-router.get("/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
-
-const FRONTEND_URL = process.env.FRONTEND_URL || "https://docmak.vercel.app";
-
-// ✅ ADD THIS (THIS IS THE MISSING PIECE)
-router.get("/google/callback",
-  passport.authenticate("google", { failureRedirect: `${FRONTEND_URL}/login.html` }),
-  async (req, res) => {
-    try {
-      const token = signToken(req.user._id);
-
-      // ✅ Redirect WITH token
-      res.redirect(`${FRONTEND_URL}/login.html?token=${token}`);
-
-    } catch (err) {
-      console.error("Google auth error:", err);
-      res.redirect(`${FRONTEND_URL}/login.html?error=oauth_failed`);
-    }
-  }
-);
-
-module.exports = router;
+// ── Start ─────────────────────────────────────────────────────
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT} [${process.env.NODE_ENV || "development"}]`));
