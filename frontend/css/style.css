@@ -842,8 +842,7 @@ textarea.form-control { padding-left: 40px; resize: vertical; }
   background: linear-gradient(145deg, #0a1829 0%, #0d1f38 100%);
 }
 .page-hero-section h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); }
-.page-hero-section p  { font-size: 1.05rem; color: rgba(255,255,255,.75); max-width: 520px; }
-
+.page-hero-section p  { font-size: 1.05rem; color: var(--text-3); max-width: 520px; }
 /* Was .cta-section — used in about.html and services.html */
 .cta-banner-section {
   background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
