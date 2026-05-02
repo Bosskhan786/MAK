@@ -185,17 +185,16 @@ async function loadAppointments() {
       msgP.textContent = a.message || "No message provided.";
 
       // Service tag (new field)
-      if (a.service) {
+      card.appendChild(dateRow);
+
+      if (a.service && a.service.trim() !== "") {
         const svcTag = document.createElement("span");
-        svcTag.className = "badge bg-primary bg-opacity-10 text-primary me-1 mb-2";
+        svcTag.className = "appt-service";
         svcTag.textContent = a.service;
-        card.appendChild(dateRow);
         card.appendChild(svcTag);
-        card.appendChild(msgP);
-      } else {
-        card.appendChild(dateRow);
-        card.appendChild(msgP);
       }
+
+card.appendChild(msgP);
 
       const cancelBtn = document.createElement("button");
       cancelBtn.className = "btn btn-sm btn-outline-danger mt-2";
