@@ -30,8 +30,7 @@ const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "")
 
 app.use(cors({
   origin: (origin, cb) => {
-    // Allow server-to-server / curl (no Origin header) in dev only
-    if (!origin && process.env.NODE_ENV !== "production") return cb(null, true);
+    if (!origin) return cb(null, true); // Allow no-origin requests (health checks, Render pings, curl)
     if (ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
     cb(new Error(`CORS blocked: ${origin}`));
   },
@@ -45,13 +44,15 @@ app.use(express.urlencoded({ extended: false, limit: "50kb" }));
 
 // ── Sessions (required by Passport for OAuth) ────────────────
 app.use(session({
-secret: process.env.SESSION_SECRET || "a-very-temporary-fallback-secret-12345",
-resave: false,  saveUninitialized: false,
+  secret: process.env.SESSION_SECRET || "fallback",
+  resave: false,
+  saveUninitialized: false,
+  store: new session.MemoryStore(), // acceptable for OAuth-only; swap for connect-mongo if you need persistence
   cookie: {
     httpOnly: true,
-    secure:   process.env.NODE_ENV === "production", // HTTPS-only in prod
+    secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    maxAge:   24 * 60 * 60 * 1000, // 1 day
+    maxAge: 10 * 60 * 1000, // 10 min — only needed during OAuth handshake
   },
 }));
 
