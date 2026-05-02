@@ -45,8 +45,8 @@ app.use(express.urlencoded({ extended: false, limit: "50kb" }));
 
 // ── Sessions (required by Passport for OAuth) ────────────────
 app.use(session({
-  secret: process.env.SESSION_SECRET || "a-very-temporary-fallback-secret-12345",  resave:            false,
-  saveUninitialized: false,
+secret: process.env.SESSION_SECRET || "a-very-temporary-fallback-secret-12345",
+resave: false,  saveUninitialized: false,
   cookie: {
     httpOnly: true,
     secure:   process.env.NODE_ENV === "production", // HTTPS-only in prod
