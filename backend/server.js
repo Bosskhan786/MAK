@@ -1,8 +1,3 @@
-require("dotenv").config();
-console.log("Current Working Directory:", process.cwd());
-console.log("Is SESSION_SECRET loaded?:", !!process.env.SESSION_SECRET);
-console.log("Is GOOGLE_ID loaded?:", !!process.env.GOOGLE_CLIENT_ID);
-
 // server.js  –  Dr. Maaz Khan backend  (fixed + hardened)
 require("dotenv").config();
 

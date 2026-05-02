@@ -96,20 +96,7 @@ router.get("/google",
 //      staging / dev redirects also work.
 const FRONTEND_URL = process.env.FRONTEND_URL || "https://docmak.vercel.app";
 
-router.get("/google/callback",
-  passport.authenticate("google", { failureRedirect: `${FRONTEND_URL}/login.html?error=google_auth_failed` }),
-  (req, res) => {
-    try {
-      const token = signToken(req.user._id);
-      // FIX: Token passed in URL is acceptable for SPA flows BUT should be
-      //      short-lived or swapped for a longer one server-side.
-      // A stricter option is to use an httpOnly cookie here.
-      res.redirect(`${FRONTEND_URL}/login.html?token=${token}`);
-    } catch (err) {
-      console.error("Google callback error:", err);
-      res.redirect(`${FRONTEND_URL}/login.html?error=token_generation_failed`);
-    }
-  }
-);
+const token = generateJWT(req.user); // however you're generating
+res.redirect(`https://docmak.vercel.app/login.html?token=${token}`);
 
 module.exports = router;
