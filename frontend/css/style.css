@@ -779,32 +779,195 @@ textarea.form-control { padding-left: 40px; resize: vertical; }
 .toast-alert.error   .toast-icon { background: #fee2e2; color: #dc2626; }
 .toast-alert.info    .toast-icon { background: var(--brand-light); color: var(--brand); }
 
-/* ── 20. RESPONSIVE ────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE — TABLET  (≤ 991px)
+   ══════════════════════════════════════════════════════════════ */
 @media (max-width: 991px) {
+  /* Hero */
   .hero-img-wrap::before { display: none; }
   .hero-float-card  { left: 0; bottom: 16px; }
   .hero-rating      { right: 0; top: 16px; }
   .exp-badge        { right: 0; bottom: 0; }
-  .svc-full-card    { flex-direction: column; }
+
+  /* Services */
+  .svc-full-card    { flex-direction: column; gap: 16px; }
+  .svc-full-icon    { width: 52px; height: 52px; font-size: 1.8rem; }
+
+  /* Contact */
   .contact-info-card { height: auto; }
+
+  /* Footer */
+  .footer-contact-card { margin-top: 8px; }
 }
 
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE — MOBILE  (≤ 767px)
+   ══════════════════════════════════════════════════════════════ */
 @media (max-width: 767px) {
-  .section-pad    { padding: 64px 0; }
-  .hero-section   { padding: 64px 0 48px; min-height: auto; }
-  .hero-img-wrap img { height: 340px; width: 100%; }
-  .hero-actions   { flex-direction: column; }
+
+  /* ── Base ── */
+  body { padding-top: 64px; }
+  .section-pad    { padding: 56px 0; }
+  .section-pad-sm { padding: 40px 0; }
+  .section-title  { font-size: clamp(1.6rem, 6vw, 2.2rem); }
+
+  /* ── Navbar ── */
+  #mainNav .container { padding: 10px 16px; }
+  .navbar-brand       { font-size: 1.25rem; }
+  /* Collapse menu: full-width card style */
+  .navbar-collapse {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 12px 8px;
+    margin-top: 10px;
+    box-shadow: var(--sh-md);
+  }
+  .navbar-nav { gap: 2px !important; }
+  .navbar-nav .nav-link { padding: 10px 14px !important; }
+  .nav-btn { width: 100%; text-align: center; margin: 4px 0 !important; }
+
+  /* ── Hero ── */
+  .hero-section   { padding: 48px 0 40px; min-height: auto; }
+  .hero-title     { font-size: clamp(2.6rem, 11vw, 3.6rem); margin-bottom: 16px; }
+  .hero-lead      { font-size: .97rem; margin-bottom: 28px; }
+  .hero-badge     { font-size: .76rem; padding: 5px 12px; margin-bottom: 18px; }
+  .hero-actions   { flex-direction: column; gap: 10px; margin-bottom: 36px; }
   .hero-actions .btn { width: 100%; text-align: center; justify-content: center; }
-  .hero-float-card, .hero-rating { position: static; margin-top: 16px; width: fit-content; }
-  .auth-card      { padding: 32px 24px; }
-  .contact-form-card { padding: 28px 20px; }
-  .contact-info-card { padding: 28px 20px; }
-  .dashboard-page { padding: 40px 0 80px; }
+  .hero-stats     { gap: 18px; }
+  .hstat strong   { font-size: 1.5rem; }
+
+  /* Hero image — stack below text, full width */
+  .hero-img-col   { margin-top: 32px; }
+  .hero-img-wrap  { display: block; }
+  .hero-img-wrap img { width: 100%; height: 280px; border-radius: var(--r-lg); }
+  .hero-float-card, .hero-rating { position: static; margin-top: 12px; width: fit-content; }
+  .hero-float-card { left: 0; }
+  .hero-rating     { right: 0; }
+
+  /* ── Strip ── */
+  .strip-item { padding: 16px 20px; gap: 12px; }
+  .strip-icon { font-size: 1.3rem; }
+
+  /* ── About image ── */
+  .about-img-wrap img { height: 300px !important; }
+  .exp-badge { right: 8px; bottom: -12px; padding: 14px 16px; }
+  .exp-num   { font-size: 1.8rem; }
+
+  /* ── Service full cards ── */
+  .svc-full-card  { padding: 22px 18px; }
+  .svc-full-body h3 { font-size: 1.1rem; }
+
+  /* ── Timeline ── */
+  .timeline { padding-left: 22px; }
+  .tl-item::before { left: -19px; }
+
+  /* ── Achievements ── */
+  .achieve-card { padding: 22px 18px; }
+
+  /* ── Contact page ── */
+  .contact-hero   { padding: 72px 16px 48px; }
+  .contact-form-card { padding: 24px 18px; border-radius: var(--r-lg); }
+  .contact-info-card { padding: 24px 18px; border-radius: var(--r-lg); }
+
+  /* ── Auth pages ── */
+  .auth-section   { padding: 32px 12px; align-items: flex-start; padding-top: 80px; }
+  .auth-card      { padding: 28px 20px; border-radius: var(--r-lg); max-width: 100%; }
+  .auth-card h2   { font-size: 1.5rem; }
+
+  /* ── Dashboard ── */
+  .dashboard-page { padding: 32px 0 64px; }
+  .appt-card      { padding: 20px; }
+
+  /* ── Footer ── */
+  .footer-section { padding: 48px 0 0; }
+  .footer-tagline { max-width: 100%; }
+  .footer-bottom  { margin-top: 36px; }
+
+  /* ── Page heroes (about/services) ── */
+  .page-hero-section { padding: 72px 0 48px; }
+  .page-hero-section h1 { font-size: clamp(1.8rem, 8vw, 2.8rem); }
+
+  /* ── CTA banner ── */
+  .cta-banner-section { padding: 64px 0; }
+  .cta-banner-section h2 { font-size: clamp(1.5rem, 6vw, 2.2rem); }
 }
 
-@media (max-width: 480px) {
-  .toast-container { bottom: 16px; right: 16px; left: 16px; }
-  .toast-alert     { min-width: unset; }
+  /* ══════════════════════════════════════════════════════════════
+  RESPONSIVE — SMALL PHONE  (≤ 480px)
+  ══════════════════════════════════════════════════════════════ */
+  @media (max-width: 480px) {
+
+  /* ── Base ── */
+  .section-title  { font-size: clamp(1.45rem, 7vw, 1.9rem); }
+  .container      { padding-left: 16px; padding-right: 16px; }
+
+  /* ── Navbar brand shorter on tiny screens ── */
+  .navbar-brand   { font-size: 1.1rem; }
+
+  /* ── Hero ── */
+  .hero-title     { font-size: clamp(2.2rem, 12vw, 3rem); }
+  .hero-stats     { flex-wrap: wrap; gap: 14px; }
+  .stat-div       { display: none; }
+  .hero-img-wrap img { height: 240px; }
+
+  /* ── Buttons full width in hero ── */
+  .hero-actions .btn { font-size: .9rem; padding: 12px 20px; }
+
+  /* ── Service cards: tighter ── */
+  .svc-card       { padding: 22px 18px; }
+  .svc-icon-wrap  { width: 44px; height: 44px; font-size: 1.2rem; margin-bottom: 16px; }
+
+  /* ── Testimonials ── */
+  .testi-card     { padding: 24px 18px; }
+
+  /* ── Contact form: single column ── */
+  .contact-form-card .row > [class*="col-sm-6"] { flex: 0 0 100%; max-width: 100%; }
+
+  /* ── Auth card: edge-to-edge ── */
+  .auth-card      { padding: 24px 16px; border-radius: var(--r); }
+  .btn-google     { font-size: .85rem; padding: 10px; }
+
+  /* ── Dashboard ── */
+  .appt-card      { padding: 16px; }
+  .empty-state    { padding: 56px 16px; }
+
+  /* ── Membership badges wrap nicely ── */
+  .mem-badge      { font-size: .78rem; padding: 5px 12px; }
+
+  /* ── Toast ── */
+  .toast-container { bottom: 16px; right: 12px; left: 12px; }
+  .toast-alert     { min-width: unset; font-size: .84rem; }
+
+  /* ── Achieve cards: 1 column on tiny screens ── */
+  .achieve-card   { padding: 18px 14px; }
+  .achieve-icon   { font-size: 1.8rem; }
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+  RESPONSIVE — EXTRA SMALL  (≤ 360px)
+  ══════════════════════════════════════════════════════════════ */
+  @media (max-width: 360px) {
+  .hero-title     { font-size: 2rem; }
+  .auth-card      { padding: 20px 14px; }
+  .navbar-brand   { font-size: 1rem; }
+  .hero-badge     { font-size: .7rem; }
+  .btn-lg         { padding: 11px 20px; font-size: .92rem; }
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+  TOUCH DEVICES — remove hover transforms (prevents sticky states)
+  ══════════════════════════════════════════════════════════════ */
+  @media (hover: none) {
+  .svc-card:hover,
+  .testi-card:hover,
+  .appt-card:hover,
+  .achieve-card:hover,
+  .svc-full-card:hover { transform: none; box-shadow: none; }
+  .btn-primary:hover,
+  .btn-outline-primary:hover { transform: none; }
+  .social-links a:hover { transform: none; }
 }
 
 /* ── 21. DARK MODE SURFACE ADJUSTMENTS ─────────────────────── */
