@@ -18,7 +18,7 @@ const app = express();
 connectDB();
 
 // ── CORS ──────────────────────────────────────────────────────
-// FIX: Was missing trailing-slash variants and localhost for dev.
+// FIX: Was missing trailing-slash 888variants and localhost for dev.
 // Keep an explicit allowlist — never use origin: "*" in production.
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "")
   .split(",")
