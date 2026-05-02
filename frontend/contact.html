@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact mak </title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Book an appointment with Dr. Maaz Khan, Senior Cardiologist at Apollo Heart Centre, Mumbai."/>
+  <title>Book Appointment – Dr. Maaz Khan</title>
+  <script>(function(){const t=localStorage.getItem("theme")||"light";document.documentElement.setAttribute("data-bs-theme",t);})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
 
@@ -17,9 +19,7 @@
 <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
   <div class="container">
     <a class="navbar-brand" href="index.html"><span class="brand-cross">✦</span> Dr. Maaz Khan</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-      <i class="bi bi-list"></i>
-    </button>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-label="Menu"><i class="bi bi-list"></i></button>
     <div class="collapse navbar-collapse" id="navMenu">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
         <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
@@ -29,31 +29,27 @@
         <li class="nav-item" id="navDashboardItem" style="display:none">
           <a class="nav-link" href="dashboard.html"><i class="bi bi-grid-1x2 me-1"></i>Dashboard</a>
         </li>
-        <li class="nav-item" id="navSignupItem">
-          <a class="nav-link" href="signup.html">Signup</a>
-        </li>
+        <li class="nav-item" id="navSignupItem"><a class="nav-link" href="signup.html">Signup</a></li>
         <li class="nav-item ms-lg-2">
           <a class="btn btn-primary nav-btn" href="login.html" id="navLoginBtn">Login</a>
         </li>
         <li class="nav-item ms-1">
-          <button class="dark-toggle" id="darkToggle" title="Toggle dark mode">🌙</button>
+          <button class="dark-toggle" id="darkToggle" aria-label="Toggle dark mode">🌙</button>
         </li>
       </ul>
     </div>
   </div>
 </nav>
 
-<!-- PAGE HERO -->
-<section class="contact-page-hero">
-  <div class="container text-center">
-    <span class="section-label">Get in Touch</span>
-    <h1 class="mt-2">Book an <em class="about-name">Appointment</em></h1>
-    <p class="mt-3 mx-auto" style="max-width:520px">Fill in the form below and we'll confirm your appointment within 24 hours.</p>
-  </div>
+<!-- HERO -->
+<section class="contact-hero">
+  <span class="section-label">Get in Touch</span>
+  <h1 class="mt-2">Book an <em>Appointment</em></h1>
+  <p class="mt-3 mx-auto" style="max-width:480px;color:var(--text-3)">Fill in the form below and we'll confirm your appointment within 24 hours.</p>
 </section>
 
-<!-- CONTACT MAIN -->
-<section class="contact-main">
+<!-- MAIN -->
+<section class="section-pad">
   <div class="container">
     <div class="row g-5">
 
@@ -61,66 +57,81 @@
       <div class="col-lg-7">
         <div class="contact-form-card">
           <h3>Request an Appointment</h3>
-          <p class="sub">All fields are required. We'll reach out to confirm.</p>
+          <p class="sub">Fields marked * are required. We'll reach out to confirm.</p>
 
           <form id="appointmentForm" novalidate>
             <div class="row g-3">
               <div class="col-sm-6">
-                <label class="form-label" for="name">Full Name</label>
-                <div class="input-icon-wrap">
+                <label class="form-label" for="appt-name">Full Name *</label>
+                <div class="input-wrap">
                   <i class="bi bi-person"></i>
-                  <input type="text" id="name" class="form-control" placeholder="Enter Name" required>
+                  <input type="text" id="appt-name" class="form-control" placeholder="Your name" required maxlength="120"/>
                 </div>
               </div>
               <div class="col-sm-6">
-                <label class="form-label" for="email">Email Address</label>
-                <div class="input-icon-wrap">
+                <label class="form-label" for="appt-email">Email Address *</label>
+                <div class="input-wrap">
                   <i class="bi bi-envelope"></i>
-                  <input type="email" id="email" class="form-control" placeholder="you@email.com" required>
+                  <input type="email" id="appt-email" class="form-control" placeholder="you@email.com" required/>
                 </div>
               </div>
               <div class="col-sm-6">
-                <label class="form-label" for="date">Preferred Date</label>
-                <div class="input-icon-wrap">
+                <label class="form-label" for="appt-date">Preferred Date *</label>
+                <div class="input-wrap">
                   <i class="bi bi-calendar2"></i>
-                  <input type="date" id="date" class="form-control" required>
+                  <input type="date" id="appt-date" class="form-control" required/>
                 </div>
               </div>
               <div class="col-sm-6">
-                <label class="form-label" for="age">Age</label>
-                <div class="input-icon-wrap">
+                <label class="form-label" for="appt-age">Age</label>
+                <div class="input-wrap">
                   <i class="bi bi-person-badge"></i>
-                  <input type="number" id="age" class="form-control" placeholder="e.g. 35" min="1" max="120" required>
+                  <input type="number" id="appt-age" class="form-control" placeholder="e.g. 45" min="1" max="120"/>
                 </div>
               </div>
               <div class="col-sm-6">
-                <label class="form-label" for="gender">Gender</label>
-                <select id="gender" class="form-control form-select">
-                  <option value="">Select gender…</option>
-                  <option>Male</option>
-                  <option>Female</option>
-                  <option>Other</option>
-                  <option>Prefer not to say</option>
-                </select>
+                <label class="form-label" for="appt-gender">Gender</label>
+                <div class="input-wrap">
+                  <i class="bi bi-gender-ambiguous"></i>
+                  <select id="appt-gender" class="form-control form-select">
+                    <option value="">Select…</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                    <option>Prefer not to say</option>
+                  </select>
+                </div>
               </div>
               <div class="col-sm-6">
-                <label class="form-label" for="service">Service</label>
-                <select id="service" class="form-control form-select">
-                  <option value="">Select a service…</option>
-                  <option>Cardiac Consultation</option>
-                  <option>Echo & Stress Test</option>
-                  <option>Interventional Cardiology</option>
-                  <option>Preventive Cardiology</option>
-                  <option>Teleconsultation</option>
-                  <option>Cardiac Rehabilitation</option>
-                  <option>Other</option>
-                </select>
+                <label class="form-label" for="appt-service">Service</label>
+                <div class="input-wrap">
+                  <i class="bi bi-heart-pulse"></i>
+                  <select id="appt-service" class="form-control form-select">
+                    <option value="">Select a service…</option>
+                    <option>Cardiac Consultation</option>
+                    <option>Echo &amp; Stress Test</option>
+                    <option>Interventional Cardiology</option>
+                    <option>Preventive Cardiology</option>
+                    <option>Teleconsultation</option>
+                    <option>Cardiac Rehabilitation</option>
+                    <option>Electrophysiology</option>
+                    <option>Sports Cardiology</option>
+                    <option>Other</option>
+                  </select>
+                </div>
               </div>
               <div class="col-12">
-                <label class="form-label" for="message">Message / Symptoms</label>
-                <textarea id="message" class="form-control" rows="4" placeholder="Briefly describe your symptoms or reason for visit…"></textarea>
+                <label class="form-label" for="appt-message">Message / Symptoms</label>
+                <div class="input-wrap">
+                  <i class="bi bi-chat-left-text" style="top:16px;transform:none"></i>
+                  <textarea id="appt-message" class="form-control" rows="4" maxlength="1000"
+                    placeholder="Describe your symptoms or reason for visit…"></textarea>
+                </div>
+                <div class="d-flex justify-content-end mt-1">
+                  <small id="msgCount" style="color:var(--text-4);font-size:.78rem">0 / 1000</small>
+                </div>
               </div>
-              <div class="col-12 mt-2">
+              <div class="col-12">
                 <button type="submit" class="btn btn-primary btn-lg w-100" id="submitBtn">
                   <i class="bi bi-calendar2-check me-2"></i>Book Appointment
                 </button>
@@ -134,24 +145,22 @@
       <div class="col-lg-5">
         <div class="contact-info-card">
           <h3>Contact Information</h3>
-          <p class="sub">Reach us anytime during working hours.</p>
+          <p class="sub">Reach us during working hours.</p>
 
           <div class="info-item">
             <div class="info-icon"><i class="bi bi-telephone-fill"></i></div>
             <div>
               <strong>Phone</strong>
-              <span>+91 22 1234 5678</span>
+              <a href="tel:+912212345678">+91 22 1234 5678</a>
             </div>
           </div>
-
           <div class="info-item">
             <div class="info-icon"><i class="bi bi-envelope-fill"></i></div>
             <div>
               <strong>Email</strong>
-              <span>dr.Maaz Khan@apolloheart.in</span>
+              <a href="mailto:dr.maazkhan@apolloheart.in">dr.maazkhan@apolloheart.in</a>
             </div>
           </div>
-
           <div class="info-item">
             <div class="info-icon"><i class="bi bi-geo-alt-fill"></i></div>
             <div>
@@ -159,7 +168,6 @@
               <span>Apollo Heart Centre, 3rd Floor,<br/>Tardeo Road, Mumbai 400034</span>
             </div>
           </div>
-
           <div class="info-item">
             <div class="info-icon"><i class="bi bi-clock-fill"></i></div>
             <div>
@@ -168,12 +176,11 @@
             </div>
           </div>
 
-          <hr style="border-color:rgba(255,255,255,.15);margin:28px 0">
-
-          <p style="font-size:.85rem;color:rgba(255,255,255,.65);margin:0">
+          <hr style="border-color:rgba(255,255,255,.15);margin:28px 0"/>
+          <p style="font-size:.85rem;color:rgba(255,255,255,.65)">
             <i class="bi bi-info-circle me-1"></i>
-            You must be <strong style="color:white">logged in</strong> to submit an appointment request. 
-            <a href="login.html" style="color:white;text-decoration:underline">Login here →</a>
+            You must be <strong style="color:#fff">logged in</strong> to book an appointment.
+            <a href="login.html" style="color:#fff;text-decoration:underline">Login here →</a>
           </p>
         </div>
       </div>
@@ -182,18 +189,17 @@
   </div>
 </section>
 
-<!-- FOOTER (same as index) -->
+<!-- FOOTER -->
 <footer class="footer-section">
   <div class="container">
     <div class="row g-5">
-      <div class="col-lg-4 col-md-6">
+      <div class="col-lg-4">
         <a class="footer-brand" href="index.html"><span class="brand-cross">✦</span> Dr. Maaz Khan</a>
         <p class="footer-tagline">Compassionate cardiac care in Mumbai since 2004.</p>
         <div class="social-links">
-          <a href="#"><i class="bi bi-linkedin"></i></a>
-          <a href="#"><i class="bi bi-twitter-x"></i></a>
-          <a href="#"><i class="bi bi-youtube"></i></a>
-          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+          <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
         </div>
       </div>
       <div class="col-lg-2 col-md-6">
@@ -205,79 +211,85 @@
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
-      <div class="col-lg-3 col-md-6">
-        <h5 class="footer-heading">Services</h5>
-        <ul class="footer-links">
-          <li><a href="services.html">Cardiac Consultation</a></li>
-          <li><a href="services.html">Echo & Stress Test</a></li>
-          <li><a href="services.html">Preventive Cardiology</a></li>
-        </ul>
-      </div>
     </div>
-    <div class="footer-bottom">
-      <p>© 2025 Dr. Maaz Khan. All rights reserved.</p>
-    </div>
+    <div class="footer-bottom"><p>© 2025 Dr. Maaz Khan. All rights reserved.</p></div>
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
 <script>
-// ── FIX: token is declared HERE, inside a proper scope ──
+const API = window.API || "https://mak-iqvm.onrender.com";
+
+// Set minimum date to today
+document.getElementById("appt-date").min = new Date().toISOString().split("T")[0];
+
+// Character counter
+const msgArea  = document.getElementById("appt-message");
+const msgCount = document.getElementById("msgCount");
+msgArea.addEventListener("input", () => {
+  msgCount.textContent = `${msgArea.value.length} / 1000`;
+});
+
+// Form submission
 document.getElementById("appointmentForm").addEventListener("submit", async function(e) {
   e.preventDefault();
 
-  // FIX: Read token at submission time (not at page-load bare scope)
   const token = localStorage.getItem("token");
-
   if (!token) {
-    showToast("Please login first to book an appointment.", "error");
-    setTimeout(() => window.location.href = "login.html", 1500);
+    showToast("Please login first to book an appointment.", "info");
+    sessionStorage.setItem("redirectAfterLogin", "contact.html");
+    setTimeout(() => window.location.href = "login.html", 1600);
     return;
   }
 
-  const btn     = document.getElementById("submitBtn");
-  const name    = document.getElementById("name").value.trim();
-  const email   = document.getElementById("email").value.trim();
-  const date    = document.getElementById("date").value;
-  const message = document.getElementById("message").value.trim();
+  const btn = document.getElementById("submitBtn");
+  const payload = {
+    name:    document.getElementById("appt-name").value.trim(),
+    email:   document.getElementById("appt-email").value.trim(),
+    date:    document.getElementById("appt-date").value,
+    message: msgArea.value.trim(),
+    age:     document.getElementById("appt-age").value.trim(),
+    gender:  document.getElementById("appt-gender").value,
+    service: document.getElementById("appt-service").value,
+  };
+
+  if (!payload.name || !payload.email || !payload.date) {
+    showToast("Please fill in all required fields.", "error"); return;
+  }
 
   btn.disabled  = true;
   btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Booking…';
 
   try {
-    const res = await fetch("https://mak-iqvm.onrender.com/api/appointments", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": token
-      },
-      body: JSON.stringify({ name, email, date, message })
+    const res  = await fetch(`${API}/api/appointments`, {
+      method:  "POST",
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+      body:    JSON.stringify(payload),
     });
+    const data = await res.json().catch(() => ({}));
+
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      showToast("Session expired. Please login again.", "error");
+      setTimeout(() => window.location.href = "login.html", 1500);
+      return;
+    }
 
     if (res.ok) {
-      showToast("Appointment booked successfully! ✓");
-      document.getElementById("appointmentForm").reset();
+      showToast("Appointment booked successfully! We'll confirm within 24 hrs. ✓");
+      this.reset();
+      msgCount.textContent = "0 / 1000";
     } else {
-      const text = await res.text();
-      showToast(text || "Booking failed. Please try again.", "error");
+      showToast(data.message || "Booking failed. Please try again.", "error");
     }
-  } catch (err) {
-    showToast("Cannot connect to server. Is the backend running?", "error");
+  } catch {
+    showToast("Cannot connect to server. Please try again.", "error");
   }
 
   btn.disabled  = false;
   btn.innerHTML = '<i class="bi bi-calendar2-check me-2"></i>Book Appointment';
 });
-
-function showToast(message, type = "success") {
-  const el = document.createElement("div");
-  el.className = `toast-alert ${type}`;
-  el.innerHTML = `<span>${type === "success" ? "✓" : "✕"}</span> ${message}`;
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 3800);
-}
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/main.js"></script>
 </body>
 </html>

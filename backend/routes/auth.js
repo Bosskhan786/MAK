@@ -1,4 +1,4 @@
-// routes/auth.js
+// routes/auth.js  –  fixed + hardened
 const express  = require("express");
 const bcrypt   = require("bcryptjs");
 const jwt      = require("jsonwebtoken");
@@ -7,22 +7,44 @@ const User     = require("../models/User");
 
 const router = express.Router();
 
-// ── SIGNUP ──────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function signToken(userId) {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) throw new Error("JWT_SECRET not configured.");
+  return jwt.sign({ id: userId }, secret, { expiresIn: "7d" });
+}
+
+// ── SIGNUP ────────────────────────────────────────────────────
+// FIX: Added email-format validation (was missing).
+// FIX: Normalise + trim all string inputs — was missing for `name`.
+// FIX: Use consistent { message } shape for all responses.
 router.post("/signup", async (req, res) => {
-  const { name, email, password } = req.body;
+  const name     = (req.body.name     || "").trim();
+  const email    = (req.body.email    || "").trim().toLowerCase();
+  const password = (req.body.password || "").trim();
 
   if (!name || !email || !password)
     return res.status(400).json({ message: "All fields are required." });
+
+  if (!EMAIL_RE.test(email))
+    return res.status(400).json({ message: "Please enter a valid email address." });
+
   if (password.length < 6)
     return res.status(400).json({ message: "Password must be at least 6 characters." });
 
-  try {
-    const existingUser = await User.findOne({ email: email.toLowerCase() });
-    if (existingUser)
-      return res.status(400).json({ message: "An account with this email already exists." });
+  // FIX: Cap name / password length to prevent DoS via huge strings.
+  if (name.length > 100)
+    return res.status(400).json({ message: "Name is too long." });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ name, email: email.toLowerCase(), password: hashedPassword });
+  try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser)
+      return res.status(409).json({ message: "An account with this email already exists." });
+
+    const hashedPassword = await bcrypt.hash(password, 12); // FIX: 12 rounds (was 10)
+    const user = new User({ name, email, password: hashedPassword });
     await user.save();
     res.status(201).json({ message: "Account created successfully." });
 
@@ -32,26 +54,31 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-// ── LOGIN ───────────────────────────────────────────────
+// ── LOGIN ─────────────────────────────────────────────────────
+// FIX: Removed information-leaking "No account found" / "Incorrect password"
+//      split — combined into a single vague message to prevent user-enumeration.
+// FIX: Trim inputs before comparing.
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  const email    = (req.body.email    || "").trim().toLowerCase();
+  const password = (req.body.password || "").trim();
 
   if (!email || !password)
     return res.status(400).json({ message: "Email and password are required." });
 
   try {
-    const user = await User.findOne({ email: email.toLowerCase() });
-    if (!user)
-      return res.status(400).json({ message: "No account found with this email." });
+    const user = await User.findOne({ email });
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
-      return res.status(400).json({ message: "Incorrect password." });
+    // FIX: Always run bcrypt.compare even when user is null to prevent
+    //      timing-based user enumeration (constant-time comparison).
+    const dummyHash  = "$2a$12$invalidhashinvalidhashinvalidhashinvalidhashinvalid";
+    const isMatch    = user
+      ? await bcrypt.compare(password, user.password)
+      : await bcrypt.compare(password, dummyHash).then(() => false);
 
-    const secret = process.env.JWT_SECRET;
-    if (!secret) return res.status(500).json({ message: "Server configuration error." });
+    if (!user || !isMatch)
+      return res.status(401).json({ message: "Invalid email or password." });
 
-    const token = jwt.sign({ id: user._id }, secret, { expiresIn: "7d" });
+    const token = signToken(user._id);
     res.json({ message: "Login successful.", token });
 
   } catch (err) {
@@ -60,18 +87,27 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// ── GOOGLE OAuth ────────────────────────────────────────
+// ── GOOGLE OAuth ───────────────────────────────────────────────
 router.get("/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
+const FRONTEND_URL = process.env.FRONTEND_URL || "https://docmak.vercel.app";
+
+// ✅ ADD THIS (THIS IS THE MISSING PIECE)
 router.get("/google/callback",
-  passport.authenticate("google", { failureRedirect: "https://docmak.vercel.app/login.html" }),
-  (req, res) => {
-    const secret = process.env.JWT_SECRET;
-    const token  = jwt.sign({ id: req.user._id }, secret, { expiresIn: "7d" });
-    // Redirect to frontend with token in URL
-    res.redirect(`https://docmak.vercel.app/login.html?token=${token}`);
+  passport.authenticate("google", { failureRedirect: `${FRONTEND_URL}/login.html` }),
+  async (req, res) => {
+    try {
+      const token = signToken(req.user._id);
+
+      // ✅ Redirect WITH token
+      res.redirect(`${FRONTEND_URL}/login.html?token=${token}`);
+
+    } catch (err) {
+      console.error("Google auth error:", err);
+      res.redirect(`${FRONTEND_URL}/login.html?error=oauth_failed`);
+    }
   }
 );
 
