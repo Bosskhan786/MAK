@@ -92,11 +92,23 @@ router.get("/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-// FIX: Was redirecting to the primary domain only. Now reads from env so
-//      staging / dev redirects also work.
 const FRONTEND_URL = process.env.FRONTEND_URL || "https://docmak.vercel.app";
 
-const token = generateJWT(req.user); // however you're generating
-res.redirect(`https://docmak.vercel.app/login.html?token=${token}`);
+// ✅ ADD THIS (THIS IS THE MISSING PIECE)
+router.get("/google/callback",
+  passport.authenticate("google", { failureRedirect: `${FRONTEND_URL}/login.html` }),
+  async (req, res) => {
+    try {
+      const token = signToken(req.user._id);
+
+      // ✅ Redirect WITH token
+      res.redirect(`${FRONTEND_URL}/login.html?token=${token}`);
+
+    } catch (err) {
+      console.error("Google auth error:", err);
+      res.redirect(`${FRONTEND_URL}/login.html?error=oauth_failed`);
+    }
+  }
+);
 
 module.exports = router;
