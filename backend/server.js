@@ -44,7 +44,7 @@ app.use(express.urlencoded({ extended: false, limit: "50kb" }));
 
 // ── Sessions (required by Passport for OAuth) ────────────────
 app.use(session({
-  secret: process.env.SESSION_SECRET || "fallback",
+  secret: process.env.SESSION_SECRET || "a-very-temporary-fallback-secret-12345",
   resave: false,
   saveUninitialized: false,
   store: new session.MemoryStore(), // acceptable for OAuth-only; swap for connect-mongo if you need persistence

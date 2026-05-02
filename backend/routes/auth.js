@@ -92,21 +92,27 @@ router.get("/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-const FRONTEND_URL = process.env.FRONTEND_URL || "https://docmak.vercel.app";
-
 // ✅ ADD THIS (THIS IS THE MISSING PIECE)
 router.get("/google/callback",
-  passport.authenticate("google", { failureRedirect: `${FRONTEND_URL}/login.html` }),
+  (req, res, next) => {
+    const FRONTEND_URL = process.env.FRONTEND_URL || "https://docmak.vercel.app";
+    passport.authenticate("google", {
+      failureRedirect: `${FRONTEND_URL}/login.html?error=google_auth_failed`,
+      session: true,
+    })(req, res, next);
+  },
   async (req, res) => {
+    const FRONTEND_URL = process.env.FRONTEND_URL || "https://docmak-puce.vercel.app";
     try {
+      if (!req.user) {
+        console.error("Google callback: req.user is undefined — session likely broken");
+        return res.redirect(`${FRONTEND_URL}/login.html?error=no_user`);
+      }
       const token = signToken(req.user._id);
-
-      // ✅ Redirect WITH token
-      res.redirect(`${FRONTEND_URL}/login.html?token=${token}`);
-
+      return res.redirect(`${FRONTEND_URL}/login.html?token=${token}`);
     } catch (err) {
-      console.error("Google auth error:", err);
-      res.redirect(`${FRONTEND_URL}/login.html?error=oauth_failed`);
+      console.error("Google callback error:", err);
+      return res.redirect(`${FRONTEND_URL}/login.html?error=oauth_failed`);
     }
   }
 );
