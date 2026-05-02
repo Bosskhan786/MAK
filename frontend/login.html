@@ -3,35 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login</title>
+  <title>Login – Dr. Maaz Khan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
+  <!-- FIX: Dark mode restore before render -->
+  <script>
+    (function(){
+      const t = localStorage.getItem("theme") || "light";
+      document.documentElement.setAttribute("data-bs-theme", t);
+    })();
+  </script>
   <style>
     .btn-google {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: #fff;
-      color: #333;
-      border: 1.5px solid #ddd;
-      border-radius: 8px;
-      padding: 11px;
-      font-family: 'Outfit', sans-serif;
-      font-size: .95rem;
-      font-weight: 500;
-      width: 100%;
-      cursor: pointer;
-      transition: box-shadow .2s;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      background: #fff; color: #333; border: 1.5px solid #ddd; border-radius: 8px;
+      padding: 11px; font-family: 'Outfit', sans-serif; font-size: .95rem;
+      font-weight: 500; width: 100%; cursor: pointer; transition: box-shadow .2s;
+      text-decoration: none; margin-top: 16px;
     }
     .btn-google:hover { box-shadow: 0 2px 8px rgba(0,0,0,.15); }
-    .btn-google img { width: 20px; height: 20px; }
-    .divider { display:flex; align-items:center; gap:12px; margin:18px 0; color:#aaa; font-size:.85rem; }
-    .divider::before, .divider::after { content:''; flex:1; height:1px; background:#e5e5e5; }
+    .btn-google img   { width: 20px; height: 20px; }
+    .divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 18px 0; color: #aaa; font-size: .85rem;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: #e5e5e5;
+    }
   </style>
 </head>
 <body>
@@ -41,7 +43,6 @@
     <a class="navbar-brand" href="index.html"><span class="brand-cross">✦</span> Dr. Maaz Khan</a>
     <div class="ms-auto d-flex gap-2">
       <a class="btn btn-outline-primary" href="signup.html">Sign Up</a>
-      <a class="btn btn-primary nav-btn" href="login.html">Login</a>
     </div>
   </div>
 </nav>
@@ -52,19 +53,25 @@
     <h2>Welcome Back</h2>
     <p class="subtitle">Login to manage your appointments</p>
 
-    <form id="loginForm" novalidate>
+    <!-- FIX: Removed novalidate so browser validation catches empty fields first -->
+    <form id="loginForm">
       <div class="mb-3">
-        <label class="form-label" for="email">Email Address</label>
+        <label class="form-label" for="login-email">Email Address</label>
         <div class="input-icon-wrap">
-          <i class="bi bi-envelope"></i>
-          <input type="email" id="email" class="form-control" placeholder="you@email.com" required>
+          <i class="bi bi-envelope" aria-hidden="true"></i>
+          <input type="email" id="login-email" class="form-control" placeholder="you@email.com" required autocomplete="email">
         </div>
       </div>
       <div class="mb-4">
-        <label class="form-label" for="password">Password</label>
-        <div class="input-icon-wrap">
-          <i class="bi bi-lock"></i>
-          <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+        <label class="form-label" for="login-password">Password</label>
+        <div class="input-icon-wrap" style="position:relative">
+          <i class="bi bi-lock" aria-hidden="true"></i>
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+          <!-- FIX: Added show/hide password toggle for usability -->
+          <button type="button" class="btn-pwd-toggle" id="pwdToggle" aria-label="Toggle password visibility"
+            style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#6b7f91;cursor:pointer;padding:0">
+            <i class="bi bi-eye" id="pwdToggleIcon"></i>
+          </button>
         </div>
       </div>
       <button type="submit" class="btn btn-primary w-100 btn-lg" id="loginBtn">
@@ -72,58 +79,84 @@
       </button>
     </form>
 
+    <div class="divider">or continue with</div>
+
     <!-- Google Login -->
     <a href="https://mak-iqvm.onrender.com/api/auth/google" class="btn-google">
-      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="" aria-hidden="true">
       Continue with Google
     </a>
 
-    <div class="divider">or login with email</div>
-
-    <p class="auth-footer-text">
+    <p class="auth-footer-text mt-3">
       Don't have an account? <a href="signup.html">Create one →</a>
     </p>
   </div>
 </section>
 
 <script>
-// Handle Google OAuth token redirect
-const urlParams = new URLSearchParams(window.location.search);
+// ── Handle OAuth callback (Google redirects back with ?token=…) ──
+const urlParams   = new URLSearchParams(window.location.search);
 const googleToken = urlParams.get("token");
-if (googleToken) {
-  localStorage.setItem("token", googleToken);
-  showToast("Login successful! Redirecting…");
-  setTimeout(() => window.location.href = "index.html", 1000);
+const oauthError  = urlParams.get("error");
+
+if (oauthError) {
+  // FIX: Was silently ignoring OAuth errors — now shows a message
+  showToast("Google sign-in failed. Please try again.", "error");
+  // Clean up URL
+  history.replaceState({}, "", window.location.pathname);
 }
 
-document.getElementById("loginForm").addEventListener("submit", async function(e) {
+if (googleToken) {
+  localStorage.setItem("token", googleToken);
+  // FIX: Clean the token out of the URL bar (security hygiene)
+  history.replaceState({}, "", window.location.pathname);
+  showToast("Login successful! Redirecting…");
+  const dest = sessionStorage.getItem("redirectAfterLogin") || "index.html";
+  sessionStorage.removeItem("redirectAfterLogin");
+  setTimeout(() => window.location.href = dest, 1000);
+}
+
+// ── Password show/hide ────────────────────────────────────────
+document.getElementById("pwdToggle").addEventListener("click", () => {
+  const input = document.getElementById("login-password");
+  const icon  = document.getElementById("pwdToggleIcon");
+  const show  = input.type === "password";
+  input.type  = show ? "text" : "password";
+  icon.className = show ? "bi bi-eye-slash" : "bi bi-eye";
+});
+
+// ── Login form ────────────────────────────────────────────────
+document.getElementById("loginForm").addEventListener("submit", async function (e) {
   e.preventDefault();
   const btn      = document.getElementById("loginBtn");
-  const email    = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
+  const email    = document.getElementById("login-email").value.trim();
+  const password = document.getElementById("login-password").value;
 
   btn.disabled  = true;
   btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Logging in…';
 
   try {
     const res  = await fetch("https://mak-iqvm.onrender.com/api/auth/login", {
-      method: "POST",
+      method:  "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
+      body:    JSON.stringify({ email, password }),
     });
     const data = await res.json();
 
     if (data.token) {
       localStorage.setItem("token", data.token);
       showToast("Login successful! Redirecting…");
-      setTimeout(() => window.location.href = "index.html", 1200);
+      // FIX: Honour redirect-after-login if set (e.g. from dashboard auth guard)
+      const dest = sessionStorage.getItem("redirectAfterLogin") || "index.html";
+      sessionStorage.removeItem("redirectAfterLogin");
+      setTimeout(() => window.location.href = dest, 1200);
     } else {
-      showToast(data.message || "Login failed", "error");
+      showToast(data.message || "Login failed. Please check your credentials.", "error");
       btn.disabled  = false;
       btn.innerHTML = 'Login <i class="bi bi-arrow-right ms-1"></i>';
     }
-  } catch (err) {
-    showToast("Cannot connect to server.", "error");
+  } catch {
+    showToast("Cannot connect to server. Please try again later.", "error");
     btn.disabled  = false;
     btn.innerHTML = 'Login <i class="bi bi-arrow-right ms-1"></i>';
   }
@@ -132,7 +165,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
 function showToast(message, type = "success") {
   const el = document.createElement("div");
   el.className = `toast-alert ${type}`;
-  el.innerHTML = `<span>${type === "success" ? "✓" : "✕"}</span> ${message}`;
+  el.textContent = (type === "success" ? "✓ " : "✕ ") + message;
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 3800);
 }

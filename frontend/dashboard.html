@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard – Dr. Maaz Khan</title>
+  <meta name="robots" content="noindex" /><!-- FIX: Dashboard should not be indexed by search engines -->
+  <title>My Appointments – Dr. Maaz Khan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -11,10 +12,12 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
 
+  <!-- FIX: Restore dark mode before paint — prevents flash on dashboard -->
   <script>
-    // Restore dark mode instantly before page renders
-    const savedTheme = localStorage.getItem("theme") || "light";
-    document.documentElement.setAttribute("data-bs-theme", savedTheme);
+    (function(){
+      const t = localStorage.getItem("theme") || "light";
+      document.documentElement.setAttribute("data-bs-theme", t);
+    })();
   </script>
 </head>
 <body>
@@ -22,8 +25,8 @@
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
   <div class="container">
-    <a class="navbar-brand" href="index.html"><span class="brand-cross">✦</span> </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+    <a class="navbar-brand" href="index.html"><span class="brand-cross">✦</span> Dr. Maaz Khan</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-label="Toggle navigation">
       <i class="bi bi-list"></i>
     </button>
     <div class="collapse navbar-collapse" id="navMenu">
@@ -36,13 +39,12 @@
           <a class="nav-link active" href="dashboard.html"><i class="bi bi-grid-1x2 me-1"></i>Dashboard</a>
         </li>
         <li class="nav-item ms-lg-2">
-          <!-- FIX: Dashboard always shows Logout when you're here -->
-          <button class="btn btn-primary nav-btn" id="logoutBtn">
+          <button class="btn btn-primary nav-btn" id="logoutBtn" aria-label="Logout">
             <i class="bi bi-box-arrow-right me-1"></i>Logout
           </button>
         </li>
         <li class="nav-item ms-1">
-          <button class="dark-toggle" id="darkToggle" title="Toggle dark mode">🌙</button>
+          <button class="dark-toggle" id="darkToggle" title="Toggle dark mode" aria-label="Toggle dark mode">🌙</button>
         </li>
       </ul>
     </div>
@@ -64,17 +66,17 @@
     </div>
 
     <!-- Loading State -->
-    <div id="loadingState" class="text-center py-5">
-      <div class="spinner-border text-primary" role="status" style="width:2.5rem;height:2.5rem"></div>
+    <div id="loadingState" class="text-center py-5" role="status" aria-live="polite">
+      <div class="spinner-border text-primary" style="width:2.5rem;height:2.5rem"></div>
       <p class="mt-3 text-muted">Loading your appointments…</p>
     </div>
 
     <!-- Appointments Grid -->
-    <div class="row g-4" id="appointmentsGrid" style="display:none!important"></div>
+    <div class="row g-4" id="appointmentsGrid" style="display:none" aria-label="Your appointments"></div>
 
     <!-- Empty State -->
-    <div id="emptyState" class="empty-state" style="display:none">
-      <div class="empty-icon"><i class="bi bi-calendar2-x"></i></div>
+    <div id="emptyState" class="empty-state" style="display:none" role="status">
+      <div class="empty-icon"><i class="bi bi-calendar2-x" aria-hidden="true"></i></div>
       <h4 class="mb-2">No Appointments Yet</h4>
       <p class="text-muted mb-4">You haven't booked any appointments. Schedule one now!</p>
       <a href="contact.html" class="btn btn-primary btn-lg">
@@ -83,30 +85,36 @@
     </div>
 
     <!-- Error State -->
-    <div id="errorState" class="empty-state" style="display:none">
-      <div class="empty-icon" style="background:#fee2e2;color:#dc2626"><i class="bi bi-exclamation-triangle"></i></div>
+    <div id="errorState" class="empty-state" style="display:none" role="alert">
+      <div class="empty-icon" style="background:#fee2e2;color:#dc2626">
+        <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+      </div>
       <h4 class="mb-2">Could Not Load Appointments</h4>
       <p id="errorMsg" class="text-muted mb-4"></p>
-      <button class="btn btn-primary" onclick="loadAppointments()">Try Again</button>
+      <button class="btn btn-primary" onclick="loadAppointments()">
+        <i class="bi bi-arrow-clockwise me-1"></i>Try Again
+      </button>
     </div>
   </div>
 </section>
 
 <script>
-// FIX: Auth guard — redirect if not logged in
+// ── Auth guard ─────────────────────────────────────────────
+// FIX: Original used alert() which is blocking and UX-jarring.
+//      Now redirects silently with a flag for the login page to pick up.
 const token = localStorage.getItem("token");
-
 if (!token) {
-  alert("Please login first.");
-  window.location.href = "login.html";
+  sessionStorage.setItem("redirectAfterLogin", "dashboard.html");
+  window.location.replace("login.html");
 }
 
-// Logout
+// ── Logout ─────────────────────────────────────────────────
 document.getElementById("logoutBtn").addEventListener("click", () => {
   localStorage.removeItem("token");
   window.location.href = "login.html";
 });
 
+// ── Load appointments ──────────────────────────────────────
 async function loadAppointments() {
   const grid    = document.getElementById("appointmentsGrid");
   const loading = document.getElementById("loadingState");
@@ -114,27 +122,32 @@ async function loadAppointments() {
   const errDiv  = document.getElementById("errorState");
   const errMsg  = document.getElementById("errorMsg");
 
+  // Reset UI
   loading.style.display = "";
-  grid.style.removeProperty("display");
   grid.style.display    = "none";
   empty.style.display   = "none";
   errDiv.style.display  = "none";
   grid.innerHTML        = "";
 
   try {
-    const res  = await fetch("https://mak-iqvm.onrender.com/api/appointments", {
-      headers: { Authorization: token }
+    const res = await fetch("https://mak-iqvm.onrender.com/api/appointments", {
+      // FIX: Send as "Bearer <token>" to match fixed backend middleware
+      headers: { Authorization: `Bearer ${token}` },
     });
 
-    const text = await res.text();
-    let data;
-
-    try {
-      data = JSON.parse(text);
-    } catch {
-      throw new Error(text || "Server returned invalid response.");
+    // FIX: Handle 401 gracefully — token expired, log user out
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      window.location.replace("login.html");
+      return;
     }
 
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || `Server error (${res.status})`);
+    }
+
+    const data = await res.json();
     loading.style.display = "none";
 
     if (!Array.isArray(data) || data.length === 0) {
@@ -143,67 +156,100 @@ async function loadAppointments() {
     }
 
     // Render cards
-    grid.style.removeProperty("display");
+    grid.style.display = "";
     data.forEach(a => {
       const dateStr = a.date
-        ? new Date(a.date).toLocaleDateString("en-IN", { day:"numeric", month:"long", year:"numeric" })
+        ? new Date(a.date).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
         : "Date TBD";
 
-      grid.innerHTML += `
-        <div class="col-md-6 col-lg-4">
-          <div class="appt-card">
-            <div class="appt-date">
-              <i class="bi bi-calendar2-check"></i>
-              ${dateStr}
-              <span class="appt-badge ms-auto"><i class="bi bi-check-circle-fill"></i> Confirmed</span>
-            </div>
-            <p class="appt-msg">${a.message || "No message provided."}</p>
-            <button class="btn btn-sm btn-outline-danger mt-2" onclick="cancelAppointment('${a._id}', this)">
-              <i class="bi bi-x-circle me-1"></i>Cancel
-            </button>
-          </div>
-        </div>
-        `;
+      // FIX: Used innerHTML with user data — XSS risk!
+      //      Now using textContent for all user-supplied values.
+      const col = document.createElement("div");
+      col.className = "col-md-6 col-lg-4";
+
+      const card = document.createElement("div");
+      card.className = "appt-card";
+
+      const dateRow = document.createElement("div");
+      dateRow.className = "appt-date";
+      dateRow.innerHTML = `<i class="bi bi-calendar2-check" aria-hidden="true"></i>`;
+      dateRow.append(` ${dateStr} `);
+
+      const badge = document.createElement("span");
+      badge.className = "appt-badge ms-auto";
+      badge.innerHTML = `<i class="bi bi-check-circle-fill" aria-hidden="true"></i> ${a.status || "Confirmed"}`;
+      dateRow.appendChild(badge);
+
+      const msgP = document.createElement("p");
+      msgP.className = "appt-msg";
+      msgP.textContent = a.message || "No message provided.";
+
+      // Service tag (new field)
+      if (a.service) {
+        const svcTag = document.createElement("span");
+        svcTag.className = "badge bg-primary bg-opacity-10 text-primary me-1 mb-2";
+        svcTag.textContent = a.service;
+        card.appendChild(dateRow);
+        card.appendChild(svcTag);
+        card.appendChild(msgP);
+      } else {
+        card.appendChild(dateRow);
+        card.appendChild(msgP);
+      }
+
+      const cancelBtn = document.createElement("button");
+      cancelBtn.className = "btn btn-sm btn-outline-danger mt-2";
+      cancelBtn.innerHTML = '<i class="bi bi-x-circle me-1"></i>Cancel';
+      cancelBtn.setAttribute("aria-label", `Cancel appointment on ${dateStr}`);
+      cancelBtn.addEventListener("click", () => cancelAppointment(a._id, cancelBtn, col));
+      card.appendChild(cancelBtn);
+
+      col.appendChild(card);
+      grid.appendChild(col);
     });
 
   } catch (err) {
     loading.style.display = "none";
     errDiv.style.display  = "";
-    errMsg.textContent    = err.message || "Unexpected error. Check the console.";
+    errMsg.textContent    = err.message || "Unexpected error.";
     console.error("Dashboard error:", err);
   }
 }
 
-async function cancelAppointment(id, btn) {
+// ── Cancel appointment ─────────────────────────────────────
+async function cancelAppointment(id, btn, colEl) {
   if (!confirm("Cancel this appointment?")) return;
-  btn.disabled = true;
+
+  btn.disabled  = true;
   btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+
   try {
     const res = await fetch(`https://mak-iqvm.onrender.com/api/appointments/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: token }
+      method:  "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
     });
+
     if (res.ok) {
-      btn.closest(".col-md-6").remove();
-      // Show empty state if no cards left
+      colEl.remove();
+      // Show empty state if no cards remain
       if (!document.querySelector("#appointmentsGrid .col-md-6")) {
         document.getElementById("emptyState").style.display = "";
       }
     } else {
-      alert("Could not cancel. Try again.");
-      btn.disabled = false;
+      alert("Could not cancel. Please try again.");
+      btn.disabled  = false;
       btn.innerHTML = '<i class="bi bi-x-circle me-1"></i>Cancel';
     }
   } catch {
-    alert("Server error.");
-    btn.disabled = false;
+    alert("Server error. Please try again.");
+    btn.disabled  = false;
     btn.innerHTML = '<i class="bi bi-x-circle me-1"></i>Cancel';
   }
 }
 
 loadAppointments();
-
 </script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/main.js"></script>
 </body>
